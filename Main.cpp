@@ -101,7 +101,6 @@ void processVideo() {
 			stringstream sstm;
 			sstm << path << str << string("-") << c << string(".jpg");
 			str = sstm.str();
-			cout << str << endl;
 
 			message = "Alert Alert Alert!!!";
 			rectangle(frame, cv::Point(values.minX, values.minY),
