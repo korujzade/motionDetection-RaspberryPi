@@ -3,7 +3,7 @@
 The application, run in Raspberry Pi, detects motions and record them.
 
 ## Why did I create this app?
-Well, I am living with my uni mates far way from university area. And we all are leaving our place for Christmas holiday. As you think, we need security thing :) 
+Well, I am living with my uni mates far way from university area. And we all are leaving our place for Christmas holiday. As you suppose, we need security :) 
 
 ## How it works?
 
