@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <ctime>
+
 using namespace cv;
 using namespace std;
 
@@ -25,11 +26,11 @@ struct tm * timeinfo;
 char buffer[80];
 
 Mat frame, gray, fgMaskMOG2;
-string message = "No motion is in the room!";
+string message = "no motion";
 Ptr<BackgroundSubtractor> pMOG2;
 int keyboard;
 int c=0;
-string path = string("/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/");
+string path = string("/Users/rj/motionDetection-RaspberryPi/frames/");
 
 void processVideo();
 Pixel_Values motion_values(Mat fgMaskMOG2);
@@ -37,9 +38,9 @@ Pixel_Values motion_values(Mat fgMaskMOG2);
 int main(int argc, char* argv[]) {
 
 	//create GUI windows
-	namedWindow("Raw Frame");
-	namedWindow("Gray Frame");
-	namedWindow("FG Mask MOG 2");
+	// namedWindow("Raw Frame");
+	// namedWindow("Gray Frame");
+	// namedWindow("FG Mask MOG 2");
 
 	//create Background Subtractor objects with MOG2 approach
 	pMOG2 = createBackgroundSubtractorMOG2();
@@ -102,23 +103,24 @@ void processVideo() {
 			sstm << path << str << string("-") << c << string(".jpg");
 			str = sstm.str();
 
-			message = "Alert Alert Alert!!!";
+			message = "alert";
 			rectangle(frame, cv::Point(values.minX, values.minY),
 					cv::Point(values.maxX - values.minX,
 							values.maxY - values.minY), cv::Scalar(32, 32, 212),
 					1);
 
-			imwrite(str, frame);
+			// imwrite(str, frame);
 
 		}
-		putText(frame, message.c_str(), cv::Point(15, 15), FONT_HERSHEY_SIMPLEX,
-				0.5, cv::Scalar(0, 0, 0));
-		message = "No motion in the room!";
+		cout<<message<<endl;
+		// putText(frame, message.c_str(), cv::Point(15, 15), FONT_HERSHEY_SIMPLEX,
+				// 0.5, cv::Scalar(0, 0, 0));
+		message = "no motion";
 
 		//show the current frame and the fg masks
-		imshow("Raw Frame", frame);
-		imshow("Gray Frame", gray);
-		imshow("FG Mask MOG 2", fgMaskMOG2);
+		// imshow("Raw Frame", frame);
+		// imshow("Gray Frame", gray);
+		// imshow("FG Mask MOG 2", fgMaskMOG2);
 
 		c++;
 		//get the input from the keyboard
