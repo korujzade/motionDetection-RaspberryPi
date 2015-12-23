@@ -10,7 +10,7 @@ Well, I am living with my uni mates far way from university area. And we all are
 When any motion is detected, the app sends an alert mail to the user and upload video frames to your server/cloud server. As soon as the frames are uploaded, they will be deleted from a storage of Raspberry PI.   
 I am using Mixture of Gaussian algorithm for detecting differences between video frames.
 
-## How to configure the app to your Raspberry Pi ?
+## How to install and use it?
 
 - Coming Soon ...
 
