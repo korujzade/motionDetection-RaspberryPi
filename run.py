@@ -1,4 +1,4 @@
-#!/usr/bin/python
+import sys
 import paramiko
 import glob
 from os import path
@@ -14,11 +14,15 @@ import smtplib
 # Import the email modules we'll need
 from email.mime.text import MIMEText
 
+localpath = sys.argv[1]
+imagespath = "*.jpg"
+imagespath = localpath + imagespath
+
 def uploadFrames():
-	remote_dir ="/remote/dir"
-	with sftp.Server("root", "pass", "server") as server:
+	remote_dir = sys.argv[6]
+	with sftp.Server(sys.argv[4], sys.argv[5], sys.argv[3]) as server:
 	    while True:	
-		    for image in glob.glob("/path/to/local/dir/*.jpg"):
+		    for image in glob.glob(imagespath):
 		        base = path.basename(image)
 		        server.upload(image, path.join(remote_dir, base))
 		        os.remove(image)
@@ -27,13 +31,13 @@ thread.start_new_thread(uploadFrames, ());
 
 class MotionDetection:
   process = None
-  command = ["./Main", "-vid", "/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/"]
+  command = ["./Main", "-vid", localpath]
   output  = []
   detectTime = None
   timeNow = None
   diff = 0
   FMT = '%H:%M:%S'
-  email = "oruczade.kamil@gmail.com" 
+  email = sys.argv[2] 
 
   # initialize stuff
   def __init__(self):
@@ -74,7 +78,6 @@ class MotionDetection:
         print "Somebody is in the room."
       else:
         print "Only god knows what's going on."
-
   
   def sendMail(self):
 	# Create a text/plain message
@@ -90,10 +93,6 @@ class MotionDetection:
 	s = smtplib.SMTP('localhost')
 	s.sendmail(me, [you], msg.as_string())
 	s.quit()
-
-
-
-
 
 md = MotionDetection()
 md.doMagic()
