@@ -1,0 +1,6 @@
+localPath: "/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/"
+email: "oruczade.kamil@gmail.com"
+server: "orujzade.com"
+username: "root"
+password: "----"
+remote path: "/home/frames"

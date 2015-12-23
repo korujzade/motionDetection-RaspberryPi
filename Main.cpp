@@ -30,7 +30,7 @@ string message = "no motion";
 Ptr<BackgroundSubtractor> pMOG2;
 int keyboard;
 int c=0;
-string path = string("/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/");
+string path;
 
 void processVideo();
 Pixel_Values motion_values(Mat fgMaskMOG2);
@@ -43,6 +43,8 @@ int main(int argc, char* argv[]) {
 	   namedWindow("Gray Frame");
 	   namedWindow("FG Mask MOG 2");
 	*/
+
+	path = string(argv[2]);   
 
 	//create Background Subtractor objects with MOG2 approach
 	pMOG2 = createBackgroundSubtractorMOG2();

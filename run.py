@@ -1,23 +1,39 @@
 #!/usr/bin/python
+import paramiko
+import glob
+from os import path
+import sftp
 import os
 import signal
 import atexit
 import subprocess
+import thread
 from datetime import datetime, date, timedelta
 # Import smtplib for the actual sending function
 import smtplib
 # Import the email modules we'll need
 from email.mime.text import MIMEText
 
+def uploadFrames():
+	remote_dir ="/remote/dir"
+	with sftp.Server("root", "pass", "server") as server:
+	    while True:	
+		    for image in glob.glob("/path/to/local/dir/*.jpg"):
+		        base = path.basename(image)
+		        server.upload(image, path.join(remote_dir, base))
+		        os.remove(image)
+
+thread.start_new_thread(uploadFrames, ());
+
 class MotionDetection:
   process = None
-  command = ["./Main", "-vid"]
+  command = ["./Main", "-vid", "/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/"]
   output  = []
   detectTime = None
   timeNow = None
   diff = 0
   FMT = '%H:%M:%S'
-  email = "youremail" 
+  email = "oruczade.kamil@gmail.com" 
 
   # initialize stuff
   def __init__(self):
@@ -73,7 +89,10 @@ class MotionDetection:
 	# envelope header.
 	s = smtplib.SMTP('localhost')
 	s.sendmail(me, [you], msg.as_string())
-	s.quit()	
+	s.quit()
+
+
+
 
 
 md = MotionDetection()
