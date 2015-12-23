@@ -13,8 +13,8 @@ I am using Mixture of Gaussian algorithm for detecting differences between video
 ## How to install and use it?
 
 - Pre-requests
--- OpenCV
--- paramiko python package (apt-get install python-paramiko)
+  - OpenCV
+  - paramiko python package (apt-get install python-paramiko)
 
 
 
