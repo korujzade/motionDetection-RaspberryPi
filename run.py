@@ -16,7 +16,8 @@ class MotionDetection:
   detectTime = None
   timeNow = None
   diff = 0
-  FMT = '%H:%M:%S' 
+  FMT = '%H:%M:%S'
+  email = "email" 
 
   # initialize stuff
   def __init__(self):
@@ -49,30 +50,24 @@ class MotionDetection:
         print "No motion detected!"
       elif line == "alert\n":
       	if (self.detectTime is None) or (diff>=1):
-      		self.detectTime = datetime.now().time()
-      		self.detectTime = self.detectTime.strftime('%H:%M:%S')
+      		self.detectTime = datetime.now().time().strftime('%H:%M:%S')
       		self.sendMail()
-      	timeNow = datetime.now().time()	
-      	timeNow = timeNow.strftime('%H:%M:%S')
+      	timeNow = datetime.now().time().strftime('%H:%M:%S')	
       	diff = datetime.strptime(timeNow, self.FMT) - datetime.strptime(self.detectTime, self.FMT)
       	diff = diff.seconds/3600
         print "Somebody is in the room."
       else:
-        print "Only god know what's going on."
+        print "Only god knows what's going on."
 
   
   def sendMail(self):
-  	# Open a plain text file for reading.  For this example, assume that
-	# the text file contains only ASCII characters.
-	#fp = open(textfile, 'rb')
 	# Create a text/plain message
-	msg = MIMEText("There is somebody in your room. Please check your server for images!")
-
-	me = "From Email"
-	you = "To Email"
+	msg = MIMEText("There is motion in your room. Please, check your server for images!")
+	me = self.email
+	you = self.email
 	msg['Subject'] = "Alert Alert!"
-	msg['From'] = "From Email"
-	msg['To'] = "To Email"
+	msg['From'] = self.email
+	msg['To'] = self.email
 
 	# Send the message via our own SMTP server, but don't include the
 	# envelope header.

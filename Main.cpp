@@ -30,17 +30,19 @@ string message = "no motion";
 Ptr<BackgroundSubtractor> pMOG2;
 int keyboard;
 int c=0;
-string path = string("/Users/rj/motionDetection-RaspberryPi/frames/");
+string path = string("/home/korujzade/Desktop/motionDetection-RaspberryPi/frames/");
 
 void processVideo();
 Pixel_Values motion_values(Mat fgMaskMOG2);
 
 int main(int argc, char* argv[]) {
 
-	//create GUI windows
-	// namedWindow("Raw Frame");
-	// namedWindow("Gray Frame");
-	// namedWindow("FG Mask MOG 2");
+	// to visually see how system works, comment out the code below and line 122
+	/* create GUI windows
+	   namedWindow("Raw Frame");
+	   namedWindow("Gray Frame");
+	   namedWindow("FG Mask MOG 2");
+	*/
 
 	//create Background Subtractor objects with MOG2 approach
 	pMOG2 = createBackgroundSubtractorMOG2();
@@ -84,7 +86,7 @@ void processVideo() {
 		pMOG2->apply(gray, fgMaskMOG2);
 
 		// notification on right up corner of the frame
-		rectangle(frame, cv::Point(10, 2), cv::Point(300, 20),
+		rectangle(frame, cv::Point(10, 2), cv::Point(250, 20),
 				cv::Scalar(255, 255, 255), -1);
 
 		// border values of motion area
@@ -97,11 +99,11 @@ void processVideo() {
 			time(&rawtime);
 			timeinfo = localtime(&rawtime);
 			strftime(buffer, 80, "%d-%m-%Y %I:%M:%S", timeinfo);
-			string str(buffer);
+			string tinfo(buffer);
 
 			stringstream sstm;
-			sstm << path << str << string("-") << c << string(".jpg");
-			str = sstm.str();
+			sstm << path << tinfo << string("-") << c << string(".jpg");
+			string str = sstm.str();
 
 			message = "alert";
 			rectangle(frame, cv::Point(values.minX, values.minY),
@@ -109,22 +111,27 @@ void processVideo() {
 							values.maxY - values.minY), cv::Scalar(32, 32, 212),
 					1);
 
-			// imwrite(str, frame);
+			putText(frame, tinfo.c_str(), cv::Point(15, 15), FONT_HERSHEY_SIMPLEX,
+				0.5, cv::Scalar(0, 0, 0));
+			imwrite(str, frame);
 
 		}
 		cout<<message<<endl;
-		// putText(frame, message.c_str(), cv::Point(15, 15), FONT_HERSHEY_SIMPLEX,
-				// 0.5, cv::Scalar(0, 0, 0));
 		message = "no motion";
 
-		//show the current frame and the fg masks
-		// imshow("Raw Frame", frame);
-		// imshow("Gray Frame", gray);
-		// imshow("FG Mask MOG 2", fgMaskMOG2);
+		// to visually see how system works, comment out the code below
+		/* putText(frame, message.c_str(), cv::Point(15, 15), FONT_HERSHEY_SIMPLEX,
+		 		0.5, cv::Scalar(0, 0, 0));
+		   show the current frame and the fg masks
+		   imshow("Raw Frame", frame);
+		   imshow("Gray Frame", gray);
+		   imshow("FG Mask MOG 2", fgMaskMOG2);
+		*/   
 
 		c++;
+
 		//get the input from the keyboard
-		keyboard = waitKey(30);
+		keyboard = waitKey(500);
 	}
 	//delete capture object
 	capture.release();
@@ -154,7 +161,6 @@ Pixel_Values motion_values(Mat fgMaskMOG2) {
 			}
 		}
 	}
-
 	return newValues;
 }
 
