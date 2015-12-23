@@ -15,6 +15,7 @@ I am using Mixture of Gaussian algorithm for detecting differences between video
 - Pre-requests
   - OpenCV 3.0 (http://docs.opencv.org/2.4/doc/tutorials/introduction/linux_install/linux_install.html)
   - paramiko python package (apt-get install python-paramiko)
+- Rest is coming soon...
 
 
 
