@@ -17,7 +17,7 @@ class MotionDetection:
   timeNow = None
   diff = 0
   FMT = '%H:%M:%S'
-  email = "email" 
+  email = "youremail" 
 
   # initialize stuff
   def __init__(self):
