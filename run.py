@@ -71,8 +71,8 @@ class MotionDetection:
 	me = "From Email"
 	you = "To Email"
 	msg['Subject'] = "Alert Alert!"
-	msg['From'] = "oruczade.kamil@gmail.com"
-	msg['To'] = "oruczade.kamil@gmail.com"
+	msg['From'] = "From Email"
+	msg['To'] = "To Email"
 
 	# Send the message via our own SMTP server, but don't include the
 	# envelope header.
