@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+Main
 
 # Precompiled Headers
 *.gch
@@ -29,8 +30,11 @@
 
 # Makefiles
 CMakeCache.txt
-CMakeFiles/*
+motion/CMakeFiles/*
 *.cmake
 frames/*
 Makefile
 
+# Python
+*.py.save
+*.pyc
