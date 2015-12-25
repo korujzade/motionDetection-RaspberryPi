@@ -18,17 +18,6 @@ localpath = sys.argv[1]
 imagespath = "*.jpg"
 imagespath = localpath + imagespath
 
-def uploadFrames():
-	remote_dir = sys.argv[6]
-	with sftp.Server(sys.argv[4], sys.argv[5], sys.argv[3]) as server:
-	    while True:	
-		    for image in glob.glob(imagespath):
-		        base = path.basename(image)
-		        server.upload(image, path.join(remote_dir, base))
-		        os.remove(image)
-
-thread.start_new_thread(uploadFrames, ());
-
 class MotionDetection:
   process = None
   command = ["./Main", "-vid", localpath]
@@ -65,35 +54,44 @@ class MotionDetection:
 
   # do your magic in here!
   def doMagic(self):
+    thread.start_new_thread(self.uploadFrames, ());
     for line in self.output:
       if line == "no motion\n":
         print "No motion detected!"
       elif line == "alert\n":
-      	if (self.detectTime is None) or (diff>=1):
-      		self.detectTime = datetime.now().time().strftime('%H:%M:%S')
-      		self.sendMail()
-      	timeNow = datetime.now().time().strftime('%H:%M:%S')	
-      	diff = datetime.strptime(timeNow, self.FMT) - datetime.strptime(self.detectTime, self.FMT)
-      	diff = diff.seconds/3600
+        if (self.detectTime is None) or (diff>=1):
+          self.detectTime = datetime.now().time().strftime('%H:%M:%S')
+          self.sendMail()
+        timeNow = datetime.now().time().strftime('%H:%M:%S')  
+        diff = datetime.strptime(timeNow, self.FMT) - datetime.strptime(self.detectTime, self.FMT)
+        diff = diff.seconds/3600
         print "Somebody is in the room."
       else:
         print "Only god knows what's going on."
+
+  def uploadFrames(self):
+    self.remote_dir = sys.argv[6]
+    with sftp.Server(sys.argv[4], sys.argv[5], sys.argv[3]) as server:
+        while True: 
+          for image in glob.glob(imagespath):
+              self.base = path.basename(image)
+              server.upload(image, path.join(self.remote_dir, self.base))
+              os.remove(image)      
   
   def sendMail(self):
-	# Create a text/plain message
-	msg = MIMEText("There is motion in your room. Please, check your server for images!")
-	me = self.email
-	you = self.email
-	msg['Subject'] = "Alert Alert!"
-	msg['From'] = self.email
-	msg['To'] = self.email
-
-	# Send the message via our own SMTP server, but don't include the
-	# envelope header.
-	s = smtplib.SMTP('localhost')
-	s.sendmail(me, [you], msg.as_string())
-	s.quit()
+    # Create a text/plain message
+    msg = MIMEText("There is motion in your room. Please, check your server for images!")
+    me = self.email
+    you = self.email
+    msg['Subject'] = "Alert Alert!"
+    msg['From'] = self.email
+    msg['To'] = self.email
+    # Send the message via our own SMTP server, but don't include the
+    # envelope header.
+    s = smtplib.SMTP('localhost')
+    s.sendmail(me, [you], msg.as_string())
+    s.quit()
 
 md = MotionDetection()
 md.doMagic()
-
+md.uploadFrames()
